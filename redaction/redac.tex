@@ -14,23 +14,150 @@
 \usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{tabto}
-\usepackage{color}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{tabto}
+\usepackage{xcolor}
+
+
 
 \newcounter{exercice}[section]
 \newenvironment{exercice}[1][]{\refstepcounter{exercice}\par\medskip
    \noindent \textbf{Exercice~\theexercice #1} \rmfamily}{\medskip}
 
 
+\lstset{
+  aboveskip=3mm,
+  belowskip=-2mm,
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{red},
+  deletekeywords={...},
+  escapeinside={\%*}{*)},
+  extendedchars=true,
+  framexleftmargin=16pt,
+  framextopmargin=3pt,
+  framexbottommargin=6pt,
+  frame=tb,
+  keepspaces=true,
+  keywordstyle=\color{blue},
+  language=C,
+  literate=
+  {²}{{\textsuperscript{2}}}1
+  {⁴}{{\textsuperscript{4}}}1
+  {⁶}{{\textsuperscript{6}}}1
+  {⁸}{{\textsuperscript{8}}}1
+  {€}{{\euro{}}}1
+  {é}{{\'e}}1
+  {è}{{\`{e}}}1
+  {ê}{{\^{e}}}1
+  {ë}{{\¨{e}}}1
+  {É}{{\'{E}}}1
+  {Ê}{{\^{E}}}1
+  {û}{{\^{u}}}1
+  {ù}{{\`{u}}}1
+  {â}{{\^{a}}}1
+  {à}{{\`{a}}}1
+  {á}{{\'{a}}}1
+  {ã}{{\~{a}}}1
+  {Á}{{\'{A}}}1
+  {Â}{{\^{A}}}1
+  {Ã}{{\~{A}}}1
+  {ç}{{\c{c}}}1
+  {Ç}{{\c{C}}}1
+  {õ}{{\~{o}}}1
+  {ó}{{\'{o}}}1
+  {ô}{{\^{o}}}1
+  {Õ}{{\~{O}}}1
+  {Ó}{{\'{O}}}1
+  {Ô}{{\^{O}}}1
+  {î}{{\^{i}}}1
+  {Î}{{\^{I}}}1
+  {í}{{\'{i}}}1
+  {Í}{{\~{Í}}}1,
+  morekeywords={*,...},
+  numbers=left,
+  numbersep=10pt,
+  numberstyle=\tiny\color{black},
+  rulecolor=\color{black},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=1,
+  stringstyle=\color{gray},
+  tabsize=4,
+  title=\lstname,
+}
+
 \begin{document}
 \maketitle
+\section{Réponses Exercices}
 \begin{exercice}
-\begin{itemize}
-\item Clé publique: $N=391$ et $E=151$
-\item Clé privée: $D=7$
-\end{itemize}
+\\$N=391$, $E=151$ et $D=7$
 \begin{enumerate}
-\item Message reçu et crypté: $C=17$\\Soit $M$ le message tel qu'envoyé (non crypté), alors:\\ $M=C^{D}[N]=17^{7}[391]=204$
+\item Message reçu et crypté: $C=17$\\
+Soit $M$ le message tel qu'envoyé (non crypté), alors:\\
+$M=C^{D}[N]=17^{7}[391]=204$.
+
+\item On sait que $N=p\times q$ avec $p,q$ deux nombres premiers. On a donc:\\
+$391=p\times q=17\times23$ \textit{(résultat obtenu avec le programme cf \ref{exo1})}\\
+Nous pouvons donc déduire $\varphi(N)$:\\
+$\varphi(N)=(p-1)(q-1)=16\times22=352$
+
+\item Nous connaissons la relation suivante: $E.D\equiv 1[\varphi(N)]$.\\
+Cette relation peut être vérifiée dans notre cas:\\ $151\times7\equiv 1[352]\leftrightarrow151\times7[352]= 1$ \textit{(vérifié avec le programme cf \ref{exo1})}
 \end{enumerate}
 \end{exercice}
 
+\begin{exercice}
+\begin{enumerate}
+\item $N=221$, $E=11$ et $D=35$
+\begin{enumerate}
+\item Soit $M=112$ le message et $C$ le message crypté, alors:\\
+$C=M^{E}[N]=112^{11}[221]=123$ 
+\end{enumerate}
+\end{enumerate}
+\end{exercice}
+\section{Annexes}
+\subsection{Programme solution de l'exercice 1}\label{exo1}
+\begin{lstlisting}
+import math
+def erathosthene(n):
+    t=[]
+    r=[]
+    t+=[False]
+    t+=[False]
+    for i in range(2,n):
+        t+=[True]
+    for i in range(2,int(math.sqrt(n))):
+        j=2*i
+        while j<len(t):
+            t[j]=False
+            j=j+i
+    for i in range(2,n):
+        if t[i]:
+            r+=[i]
+    return r
+def scan(tab,n):
+    for i in range(len(t)):
+        for y in range(len(t)):
+            if tab[i]*tab[y]==n:
+                return [tab[i],tab[y]]
+    return False
+
+e=151
+d=7
+n=391
+
+print("e=",e,", d=",d,", n=",n,sep="")
+print("====================")
+t=erathosthene(300)
+t=scan(t,n)
+print("p=",t[0]," et q=",t[1],sep="")
+phi=(t[0]-1)*(t[1]-1)
+print("phi(N) =",phi)
+print("E*D%phi =",e*d%phi)
+\end{lstlisting}
 \end{document}
