@@ -1,0 +1,36 @@
+\documentclass[10pt,a4paper,french]{article}
+\author{par Léo Peyronnet}
+\title{Code RSA}
+\date{Décembre 2022}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{babel}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{tabto}
+\usepackage{color}
+
+\newcounter{exercice}[section]
+\newenvironment{exercice}[1][]{\refstepcounter{exercice}\par\medskip
+   \noindent \textbf{Exercice~\theexercice #1} \rmfamily}{\medskip}
+
+
+\begin{document}
+\maketitle
+\begin{exercice}
+\begin{itemize}
+\item Clé publique: $N=391$ et $E=151$
+\item Clé privée: $D=7$
+\end{itemize}
+\begin{enumerate}
+\item Message reçu et crypté: $C=17$\\Soit $M$ le message tel qu'envoyé (non crypté), alors:\\ $M=C^{D}[N]=17^{7}[391]=204$
+\end{enumerate}
+\end{exercice}
+
+\end{document}
