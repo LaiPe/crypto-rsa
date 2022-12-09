@@ -38,4 +38,5 @@ print("phi(N) =",phi)
 print("E*D%phi =",e*d%phi)"""
 
 #exo2
-print(112^11%221)
+print((112**11)%221)
+print((78**35)%221)

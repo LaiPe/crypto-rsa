@@ -116,7 +116,9 @@ Cette relation peut être vérifiée dans notre cas:\\ $151\times7\equiv 1[352]\
 \item $N=221$, $E=11$ et $D=35$
 \begin{enumerate}
 \item Soit $M=112$ le message et $C$ le message crypté, alors:\\
-$C=M^{E}[N]=112^{11}[221]=123$ 
+$C=M^{E}[N]=112^{11}[221]=122$
+\item Soit $C=78$ le message reçu et $m$ le message originel, alors:\\
+$M=C^{D}[N]=78^{35}[221]=65$
 \end{enumerate}
 \end{enumerate}
 \end{exercice}
