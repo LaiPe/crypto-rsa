@@ -26,24 +26,16 @@
    \noindent \textbf{Exercice~\theexercice #1} \rmfamily}{\medskip}
 
 
+\definecolor{ao(english)}{rgb}{0.0, 0.5, 0.0}
 \lstset{
-  aboveskip=3mm,
-  belowskip=-2mm,
-  basicstyle=\footnotesize,
-  breakatwhitespace=false,
-  breaklines=true,
-  captionpos=b,
-  commentstyle=\color{red},
-  deletekeywords={...},
-  escapeinside={\%*}{*)},
   extendedchars=true,
   framexleftmargin=16pt,
   framextopmargin=3pt,
   framexbottommargin=6pt,
   frame=tb,
-  keepspaces=true,
-  keywordstyle=\color{blue},
-  language=C,
+  commentstyle=\color{ao(english)},
+  breaklines=true,
+  language=Python,
   literate=
   {²}{{\textsuperscript{2}}}1
   {⁴}{{\textsuperscript{4}}}1
@@ -77,18 +69,6 @@
   {Î}{{\^{I}}}1
   {í}{{\'{i}}}1
   {Í}{{\~{Í}}}1,
-  morekeywords={*,...},
-  numbers=left,
-  numbersep=10pt,
-  numberstyle=\tiny\color{black},
-  rulecolor=\color{black},
-  showspaces=false,
-  showstringspaces=false,
-  showtabs=false,
-  stepnumber=1,
-  stringstyle=\color{gray},
-  tabsize=4,
-  title=\lstname,
 }
 
 \begin{document}
@@ -120,6 +100,30 @@ $C=M^{E}[N]=112^{11}[221]=122$
 \item Soit $C=78$ le message reçu et $m$ le message originel, alors:\\
 $M=C^{D}[N]=78^{35}[221]=65$
 \end{enumerate}
+\item $p=53$, $q=71$
+\begin{enumerate}
+\item $N=53\times 71=3763$\\$\varphi(N)=52\times 70=3640$
+\item $E=307$: $E<\varphi(N) \land pgcd(\varphi(N),E)=1$
+\begin{itemize}
+\item 307<3640
+\item $pgcd(\varphi(N),E)=3640\times (-7)+307\times 83=1$
+\end{itemize}
+$E$ est donc acceptable.\\
+$D=E^{-1}[\varphi(N)]=83$
+\item
+\begin{itemize}
+\item Clé publique: $E=307$ et $N=3763$
+\item Clé privée: $D=83$ et $N$ \textit{(déjà connu avec la clé publique)}
+\end{itemize}
+\item Les éléments restants sont $p$ et $q$. Étant les générateurs de $N$, ils doivent être dissimulés car ils sont de fait les détenteurs de l'asymétrie du code RSA. Pour rappel, afin de pouvoir décoder et lire RSA, il faut posséder $D$ qui est l'inverse modulaire de $E$ modulo $(p-1)(q-1)$. Le processus pour déterminer $p$ et $q$ à partir de $N$ est gourmand en ressources (cf. \ref{exo1}). Ainsi, plus $p$ et $q$ seront grands, plus le décodage par \textit{"brute force"} demandera de ressources temporelles ou spatiales.
+\end{enumerate}
+\end{enumerate}
+\end{exercice}
+\begin{exercice}
+\\$E=257$, $N=1073$, $D=353$.
+\begin{enumerate}
+\item Chiffrer "METHODE":\\
+Correspond à $12$
 \end{enumerate}
 \end{exercice}
 \section{Annexes}
