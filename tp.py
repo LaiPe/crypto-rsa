@@ -85,40 +85,84 @@ def numtoalpha(li,alpha):
     mot="" #mot à renvoyer
     temp="" #mémoire temporaire
     c=True #état
-    e=0
+    i=0
 
-    for i in range(len(li)):
-        if isinstance(li[i],int):
-            li[i]=str(li[i])
-            if i!=len(li)-1:
-                while len(li[i])<3:
-                    li[i]="0"+li[i]
-    
-        if len(li[i])==3: #si li[i] est composé de 3 chiffres   
+    while i<len(li):
+        li[i]=str(li[i])
+        if len(li[i])==3: #bloc de 3 chiffres
             if c: #état 0 (mémoire temp vide)
-                mot+=alpha[int(li[i][0]+li[i][1])]
-                temp+=li[i][2]
-                c=False #passage à l'état 1
-                e+=1
-                print("a",temp)
+                t=0
+                while t<2 and int(li[i][t]+li[i][t+1])>=len(alpha): #l'indice calculé est incohérent (trop grand) 
+                    print(t)
+                    mot+=alpha[int(li[i][t])]
+                    t+=1
+                if t==0: 
+                    mot+=alpha[int(li[i][t]+li[i][t+1])]
+                    temp+=li[i][t+2]
+                    c=False #passage à l'état 1
+                elif t==1:
+                    mot+=alpha[int(li[i][t]+li[i][t+1])]
+                elif t==2:
+                    temp+=li[i][t]
+                    c=False #passage à l'état 1
+                i+=1
             else: #état 1 (mémoire temp: 1 chiffre)
-                mot+=alpha[int(temp+li[i][0])]
-                temp=""
-                mot+=alpha[int((li[i][1]+li[i][2]))]
-                e+=2
-                c=True #retour à l'état 0
-                print("b",temp)
-        elif len(li[i])==2: #si li[i] est composé de 2 chiffres (fin de liste)
-            mot+=alpha[int(temp+li[i])] #flush
-            print("c",temp)
-        else: #si li[i] est composé de 1 chiffre (fin de liste)
-            if temp!="":
-                mot+=alpha[int(temp+"0")] #flush
-            mot+=alpha[int(li[i])]
-            print("d",temp)
-        print("boucle",e)
-    print(e)
-    return mot #renvoie mot
+                print(temp)
+                if int(temp+li[i][0])>=len(alpha): #l'indice calculé est incohérent (trop grand)
+                    mot+=alpha[int(temp)]
+                    temp="" #vide la mémoire
+                    c=True #passage à l'état 0
+                    #i n'est pas incrémenté;reste sur le même bloc de 3 chiffres
+                else:
+                    mot+=alpha[int(temp+li[i][0])]
+                    temp="" #vide la mémoire
+                    if int(li[i][1]+li[i][2])>=len(alpha):
+                        mot+=alpha[int(li[i][1])]
+                        temp+=li[i][2]
+                        #reste à l'état 1
+                    else:
+                        mot+=alpha[int(li[i][1]+li[i][2])]
+                        c=True #passage à l'état 0
+                    i+=1
+        elif len(li[i])==2: #bloc de 2 chiffres
+            if c: #état 0 (mémoire temp vide)
+                if int(li[i][0]+li[i][1])>=len(alpha): #l'indice calculé est incohérent (trop grand)
+                    mot+=alpha[int(li[i][0])]
+                    temp+=li[i][1]
+                    c=False #passage à l'état 1
+                else:
+                    mot+=alpha[int(li[i][0]+li[i][1])]
+                    #reste à l'état 0
+                i+=1
+            else: #état 1 (mémoire temp: 1 chiffre)
+                if int(temp+li[i][0])>=len(alpha): #l'indice calculé est incohérent (trop grand)
+                    mot+=alpha[int(temp)]
+                    temp="" #vide la mémoire
+                    c=True #passage à l'état 0
+                    #i n'est pas incrémenté;reste sur le même bloc de 2 chiffres
+                else:
+                    mot+=alpha[int(temp+li[i][0])]
+                    temp=li[i][1] #vide puis nouvelle valeur
+                    #reste à l'état 1
+                    i+=1
+        elif len(li[i])==1: #bloc d'un seul chiffre
+            if c: #état 0 (mémoire temp vide)
+                #l'indice est forcément cohérent 
+                mot+=alpha[int(li[i][0])]
+            else: #état 1 (mémoire temp: 1 chiffre)
+                if int(temp+li[i][0])>=len(alpha): #l'indice calculé est incohérent (trop grand)
+                    mot+=alpha[int(temp)] 
+                    temp=temp=li[i][0] #vide puis nouvelle valeur
+                    #reste à l'état 1
+                else:
+                    mot+=alpha[int(temp+li[i][0])]
+                    c=True #passage à l'état 0
+            i+=1
+    
+    if temp!="": #si la mémoire temp n'est pas vide
+        mot+=alpha[int(temp)] #flush
+        temp="" #vide la mémoire
+    return mot 
 
 def rsa(message,cle,n):
     for i in range(len(message)):
@@ -157,27 +201,4 @@ e=257
 n=1073
 d=353
 
-
-print("=========TABLE FONCTION==========")
-
-for x in range(34):
-    y=math.ceil(2*x/3)
-    print("x=",x,"; y=",y,sep="")
-print("=============================")
-
-m1="AJOUT"
-print("le mot est:",m1)
-print("taille du mot:",len(m1))
-
-c1=alphatonum(m1,alpha)
-print("c1:",c1)
-
-rsa(c1,e,n)
-print("c1 crypté:",c1)
-
-rsa(c1,d,n)
-print("c1 décrypté:",c1)
-
-m1=numtoalpha(c1,alpha)
-print("le mot est:",m1)
-
+print(numtoalpha([110,1,3,6],alpha))
