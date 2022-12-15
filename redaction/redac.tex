@@ -123,7 +123,71 @@ $D=E^{-1}[\varphi(N)]=83$
 \\$E=257$, $N=1073$, $D=353$.
 \begin{enumerate}
 \item Chiffrer "METHODE":\\
-Correspond à $12$
+Correspond à $12;04;19;07;14;03;04$.\\
+Soit regroupé par paquet de 3: $120;419;071;403;04$.
+\begin{itemize}
+\item $120^{257}[1073]=589$
+\item $419^{257}[1073]=673$
+\item $71^{257}[1073]=238$
+\item $403^{257}[1073]=308$
+\item $4^{257}[1073]=1024$
+\end{itemize}
+Nous avons donc: $589;673;238;308;1024$.
+
+\item Déchiffrer $263;115;613;10$:
+\begin{itemize}
+\item $263^{353}[1073]=21$
+\item $115^{353}[1073]=724$
+\item $613^{353}[1073]=151$
+\item $10^{353}[1073]=914$
+\end{itemize}
+Nous avons donc: $21;724;151;914$.\\
+Soit regroupé par paquet de 2: $21;07;24;15;19;14$.\\
+Le message est: "CRYPTO".
+
+\item Chiffrer "AVEZVOUSBIENREUSSI":\\
+Correspond à $00;21;04;25;21;14;20;18;01;08;04;13;17;04;20;18;18;08$.\\
+Soit regroupé par paquet de 3: $002;104;252;114;201;801;080;413;170;$ $420;181;808$.
+\begin{itemize}
+\item $2^{257}[1073]=32$
+\item $104^{257}[1073]=916$
+\item $252^{257}[1073]=546$
+\item $114^{257}[1073]=983$
+\item $201^{257}[1073]=403$
+\item $801^{257}[1073]=1001$
+\item $80^{257}[1073]=709$
+\item $413^{257}[1073]=857$
+\item $170^{257}[1073]=716$
+\item $420^{257}[1073]=1034$
+\item $181^{257}[1073]=567$
+\item $808^{257}[1073]=919$
+\end{itemize}
+Nous avons donc: $32;916;546;983;403;1001;709;857;716;1034;567;919$.
+
+\item Déchiffrer $1019;35;567;36;384;703;99;59$:
+\begin{itemize}
+\item $1019^{353}[1073]=180$
+\item $35^{353}[1073]=13$
+\item $567^{353}[1073]=181$
+\item $36^{353}[1073]=517$
+\item $384^{353}[1073]=140$
+\item $703^{353}[1073]=111$
+\item $99^{353}[1073]=41$
+\item $59^{353}[1073]=204$
+\end{itemize}
+Nous avons donc: $180;13;181;517;140;111;41;204$.\\
+Soit regroupé par paquet de 2: $18;00;13;18;15;17;14;01;11;04;12;04$.\\
+Le message est: "SANSPROBLEME".
+
+\item Déchiffrer $553;813$:
+\begin{itemize}
+\item $553^{353}[1073]=36$
+\item $813^{353}[1073]=813$
+
+\end{itemize}
+Nous avons donc: $36;813$.\\
+Soit regroupé par paquet de 2: $03;06;08;13$.\\
+Le message est: "DGIN".
 \end{enumerate}
 \end{exercice}
 \section{Annexes}
