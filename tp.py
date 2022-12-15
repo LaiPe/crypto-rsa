@@ -88,13 +88,19 @@ def numtoalpha(li,alpha):
     c=True #état
     i=0
 
+
+
     while i<len(li):
-        li[i]=str(li[i])
+        if isinstance(li[i],int): #ajout de "0" pour remplir les blocs (sauf le dernier -> cas de fin de mot)
+            li[i]=str(li[i])
+            if i!=len(li)-1:
+                while len(li[i])<3:
+                    li[i]="0"+li[i]
+
         if len(li[i])==3: #bloc de 3 chiffres
             if c: #état 0 (mémoire temp vide)
                 t=0
                 while t<2 and int(li[i][t]+li[i][t+1])>=len(alpha): #l'indice calculé est incohérent (trop grand) 
-                    print(t)
                     mot+=alpha[int(li[i][t])]
                     t+=1
                 if t==0: 
@@ -108,7 +114,6 @@ def numtoalpha(li,alpha):
                     c=False #passage à l'état 1
                 i+=1
             else: #état 1 (mémoire temp: 1 chiffre)
-                print(temp)
                 if int(temp+li[i][0])>=len(alpha): #l'indice calculé est incohérent (trop grand)
                     mot+=alpha[int(temp)]
                     temp="" #vide la mémoire
@@ -125,7 +130,7 @@ def numtoalpha(li,alpha):
                         mot+=alpha[int(li[i][1]+li[i][2])]
                         c=True #passage à l'état 0
                     i+=1
-        elif len(li[i])==2: #bloc de 2 chiffres
+        elif len(li[i])==2: #bloc de 2 chiffres (cas de fin de mot)
             if c: #état 0 (mémoire temp vide)
                 if int(li[i][0]+li[i][1])>=len(alpha): #l'indice calculé est incohérent (trop grand)
                     mot+=alpha[int(li[i][0])]
@@ -146,17 +151,18 @@ def numtoalpha(li,alpha):
                     temp=li[i][1] #vide puis nouvelle valeur
                     #reste à l'état 1
                     i+=1
-        elif len(li[i])==1: #bloc d'un seul chiffre
+        elif len(li[i])==1: #bloc d'un seul chiffre (cas de fin de mot)
             if c: #état 0 (mémoire temp vide)
                 #l'indice est forcément cohérent 
                 mot+=alpha[int(li[i][0])]
             else: #état 1 (mémoire temp: 1 chiffre)
                 if int(temp+li[i][0])>=len(alpha): #l'indice calculé est incohérent (trop grand)
                     mot+=alpha[int(temp)] 
-                    temp=temp=li[i][0] #vide puis nouvelle valeur
+                    temp=li[i][0] #vide puis nouvelle valeur
                     #reste à l'état 1
                 else:
                     mot+=alpha[int(temp+li[i][0])]
+                    temp="" #vide la mémoire
                     c=True #passage à l'état 0
             i+=1
     
@@ -202,18 +208,8 @@ e=257
 n=1073
 d=353
 
-print(numtoalpha([110,1,3,6],alpha))
-
-print("=========TABLE FONCTION==========")
-
-for x in range(34):
-    y=math.ceil(2*x/3)
-    print("x=",x,"; y=",y,sep="")
-print("=============================")
-
-m1="AJOUTERA"
+m1="BONJOUR"
 print("!le mot est:",m1)
-print("!taille du mot:",len(m1))
 
 c1=alphatonum(m1,alpha)
 print("!c1:",c1)
@@ -226,3 +222,5 @@ print("!c1 décrypté:",c1)
 
 m1=numtoalpha(c1,alpha)
 print("!le mot est:",m1)
+
+#print(numtoalpha(["010", "806", "170", "019", "081", "4"],alpha))
