@@ -1,5 +1,4 @@
 import math
-
 def erathosthene(n):
     t=[] # liste booléenne de taille n
     r=[] # liste des entiers premiers dans l'intervalle [0,n[
@@ -22,12 +21,10 @@ def erathosthene(n):
 def scan(n):
     tab=erathosthene(n) #import des nombres premiers compris entre 0 et n exclu
     s=len(tab)
-    pyr=0
     for i in range(s): # 0 <= i < len(tab)
-        for y in range(pyr,s): # pyr <= y < len(tab)
-            if tab[i]*tab[y]==n: # si le produit des deux nombres entiers d'indices i et y est égal à n
-                return [tab[i],tab[y]] # renvoie p et q
-        pyr+=1
+        for j in range(i,s): # pyr <= y < len(tab)
+            if tab[i]*tab[j]==n: # si le produit des deux nombres entiers d'indices i et y est égal à n
+                return [tab[i],tab[j]] # renvoie p et q
     return False
 
 def euclideEtt(a,b):
@@ -54,7 +51,7 @@ def euclideEtt(a,b):
     return [r1,u1,v1] # retourne l'identité de bézout
 
 #exo1
-"""e=151
+e=151
 d=7
 n=391
 
@@ -65,7 +62,7 @@ print("p=",t[0]," et q=",t[1],sep="")
 phi=(t[0]-1)*(t[1]-1)
 print("phi(N) =",phi)
 verif=euclideEtt(phi,e)
-print(phi,"*",verif[1],"+",e,"*",verif[2],"=",verif[0],"(identité de bézout)")"""
+print(phi,"*",verif[1],"+",e,"*",verif[2],"=",verif[0],"(identité de bézout)")
 
 #exo2
 

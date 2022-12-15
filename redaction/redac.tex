@@ -18,6 +18,7 @@
 \usepackage{amssymb}
 \usepackage{tabto}
 \usepackage{xcolor}
+\usepackage{hyperref}
 
 
 
@@ -190,44 +191,117 @@ Soit regroupé par paquet de 2: $03;06;08;13$.\\
 Le message est: "DGIN".
 \end{enumerate}
 \end{exercice}
-\section{Annexes}
-\subsection{Programme solution de l'exercice 1}\label{exo1}
+\section{Présentation des programmes}
+\subsection{Algorithmes relatifs à l'exercice 1 et 2}
+\subsubsection{erathosthene()}
+Fonction relative au Crible d'Eratosthène. Renvoie une liste $r$ contenant l'ensemble des entiers premiers $P \subset [0,N[$.
 \begin{lstlisting}
 import math
 def erathosthene(n):
-    t=[]
-    r=[]
-    t+=[False]
-    t+=[False]
-    for i in range(2,n):
-        t+=[True]
-    for i in range(2,int(math.sqrt(n))):
-        j=2*i
+    t=[] # liste booléenne de taille n
+    r=[] # liste des entiers premiers dans l'intervalle [0,n[
+    t+=[False] #0 n'est pas premier
+    t+=[False] #1 n'est pas premier
+    for i in range(2,n): #2 <= i < n
+        t+=[True] #initialisation des n-2 autres entiers (2,3,4,...,n-1)
+    
+    for i in range(2,int(math.sqrt(n))): #2<= i < sqrt(n)
+        j=2*i #j appartient à l'ensemble des multiples de i de 0 à n-1
         while j<len(t):
-            t[j]=False
-            j=j+i
-    for i in range(2,n):
-        if t[i]:
-            r+=[i]
-    return r
-def scan(tab,n):
-    for i in range(len(t)):
-        for y in range(len(t)):
-            if tab[i]*tab[y]==n:
-                return [tab[i],tab[y]]
-    return False
+            t[j]=False # j n'est pas premier
+            j=j+i # prochain multiple de i
 
-e=151
-d=7
-n=391
-
-print("e=",e,", d=",d,", n=",n,sep="")
-print("====================")
-t=erathosthene(300)
-t=scan(t,n)
-print("p=",t[0]," et q=",t[1],sep="")
-phi=(t[0]-1)*(t[1]-1)
-print("phi(N) =",phi)
-print("E*D%phi =",e*d%phi)
+    for i in range(2,n): #2 <= i < n
+        if t[i]: #si i est premier
+            r+=[i] #i appartient à r
+    return r #renvoie r
 \end{lstlisting}
+\newpage
+\subsubsection{scan()}
+Fonction de "brute force". Permet de déduire $p$ et $q$ à partir de $N$. Pour ce faire, elle génère une matrice triangulaire supérieure $A=(i\times j)_{j\geqslant i;i,j\in P}$. Le choix de la triangulaire se justifie par le fait que la multiplication est commutative. Cela permet donc d'éviter les doublons $(i \times j)$ et $(j\times i)$.
+\begin{lstlisting}
+def scan(n):
+    tab=erathosthene(n) #import des nombres premiers compris entre 0 et n exclu
+    s=len(tab)
+    for i in range(s): # 0 <= i < len(tab)
+        for j in range(i,s): # pyr <= y < len(tab)
+            if tab[i]*tab[j]==n: # si le produit des deux nombres entiers d'indices i et y est égal à n
+                return [tab[i],tab[j]] # renvoie p et q
+    return False
+\end{lstlisting}
+\subsubsection{euclideEtt()}
+Fonction relative à l'algorithme d'Euclide Étendu.  Renvoie l'identité de Bézout ($a.u+b.v=pgcd(a,b)$) sous forme d'une liste de trois entiers. r1: pgcd; u1: u et v1: v.
+\begin{lstlisting}
+def euclideEtt(a,b):
+    r1=b
+    r2=a
+    u1=0
+    v1=1
+    u2=1
+    v2=0
+    while r2!=0:
+        q=r1//r2
+        
+        r3=r1
+        u3=u1
+        v3=v1
+
+        r1=r2
+        u1=u2
+        v1=v2
+
+        r2=r3-q*r2
+        u2=u3-q*u2
+        v2=v3-q*v2
+    return [r1,u1,v1] # retourne l'identité de bézout
+\end{lstlisting}
+\subsection{Algorithmes relatifs à l'exercice 3}
+\textit{(Je me suis rendu compte trop tard que les algorithmes ci-dessous n'étaient absolument pas demandés. Cependant, je me suis permis de quand même les laisser dans ce rapport car leur présentation peut rester intéressante.)}
+\subsubsection{rsa()}
+Fonction de chiffrage RSA d'une liste de paquets. Soit $x$ un paquet; $rsa(x)=x^{\mbox{cle}}[N]; \mbox{cle} \in \{E,D\}$, $E$ pour chiffrement, $D$ pour déchiffrement.
+\begin{lstlisting}
+def rsa(message,cle,n):
+    for i in range(len(message)):
+        message[i]=int(message[i])**cle%n
+\end{lstlisting}
+\subsubsection{alphatonum()}
+Fonction retournant une liste de paquets correspondant à un mot par rapport à un alphabet.
+\begin{lstlisting}
+def alphatonum(mot,alpha):
+    li=[] #liste de chiffres par bloc de 3
+    temp="" #mémoire temporaire
+    c=0 #état
+    for i in range(len(mot)): #0 <= i < len(mot)
+        y=0 #position de la i-ème lettre du mot dans alpha (alphabet)
+        while mot[i]!=alpha[y]: #tant que la i-ème lettre ne correspond pas à une lettre de l'alphabet
+            y+=1 #y est incrémenté
+
+        y=str(y)
+        if len(y)==1: # si y est un chiffre (0,1,2,...,9)
+            y="0"+y
+
+        if c==0: #état 0 (mémoire temp vide)
+            temp=y
+            c+=1 #passage à l'état 1
+        elif c==1: #état 1 (mémoire temp: 2 chiffres)
+            li+=[temp+y[0]]
+            temp=y[1]
+            c+=1 #passage à l'état 2
+        elif c==2: #état 2 (mémoire temp: 1 chiffre)
+            li+=[temp+y]
+            temp=""
+            c=0 #retour à l'état 0
+    if temp!="": #si la mémoire temp n'est pas vide
+        li+=[temp] #flush
+    return li #renvoie li
+\end{lstlisting}
+\subsubsection{alphatonum()}
+Fonction réciproque à alphatonum(). Peut se schématiser par la vérification de trois paramètres:
+\begin{enumerate}
+\item la taille du paquet reçu $\in \{1,2,3\}$.
+\item l'état de la mémoire temporaire $\in \{0,1\}$
+\item la cohérence de l'indice calculé: indice calculé $\geqslant$ taille de l'alphabet ?
+
+\end{enumerate}
+\textit{Cette fonction ayant une syntaxe lourde, il est préférable de pouvoir la lire sur un format adéquat. Ainsi, j'ai joint à ce rapport le lien du dépôt distant github de ce projet: \url{https://github.com/LaiPe/crypto-rsa}. La fonction se trouve dans le sous-répertoire "programmes", dans le fichier "exo3.py"}
 \end{document}
