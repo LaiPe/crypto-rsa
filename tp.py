@@ -65,25 +65,18 @@ def alphatonum(mot,alpha):
         y=str(y)
         if len(y)==1: # si y est un chiffre (0,1,2,...,9)
             y="0"+y
-        print(y)
-   
+
         if c==0: #état 0 (mémoire temp vide)
-            print("c0:",temp)
             temp=y
             c+=1 #passage à l'état 1
-            print("c0:",temp)
         elif c==1: #état 1 (mémoire temp: 2 chiffres)
-            print("c1:",temp)
             li+=[temp+y[0]]
             temp=y[1]
             c+=1 #passage à l'état 2
-            print("c1:",temp)
         elif c==2: #état 2 (mémoire temp: 1 chiffre)
-            print("c2:",temp)
             li+=[temp+y]
             temp=""
             c=0 #retour à l'état 0
-            print("c2:",temp)
     if temp!="": #si la mémoire temp n'est pas vide
         li+=[temp] #flush
     return li #renvoie li
@@ -92,30 +85,44 @@ def numtoalpha(li,alpha):
     mot="" #mot à renvoyer
     temp="" #mémoire temporaire
     c=True #état
-    for e in li: #e corrspond à une chaine de car d'au plus 3 chiffres. e prends à chaque passage de boucle la valeur suivante dans li. 
-        print(e)
-        if len(e)==3: #si e est composé d'exactement 3 chiffres    
+    e=0
+
+    for i in range(len(li)):
+        if isinstance(li[i],int):
+            li[i]=str(li[i])
+            if i!=len(li)-1:
+                while len(li[i])<3:
+                    li[i]="0"+li[i]
+    
+        if len(li[i])==3: #si li[i] est composé de 3 chiffres   
             if c: #état 0 (mémoire temp vide)
-                print("a1:",temp)
-                mot+=alpha[int(e[0]+e[1])]
-                temp+=e[2]
+                mot+=alpha[int(li[i][0]+li[i][1])]
+                temp+=li[i][2]
                 c=False #passage à l'état 1
-                print("a1:",temp)
+                e+=1
+                print("a",temp)
             else: #état 1 (mémoire temp: 1 chiffre)
-                print("a2:",temp)
-                mot+=alpha[int(temp+e[0])]
+                mot+=alpha[int(temp+li[i][0])]
                 temp=""
-                mot+=alpha[int((e[1]+e[2]))]
+                mot+=alpha[int((li[i][1]+li[i][2]))]
+                e+=2
                 c=True #retour à l'état 0
-                print("a2:",temp)
-        else: #si e est composé de 2 ou 1 chiffres (fin de liste)
-            print("b:",temp)
-            mot+=alpha[int(temp+e)] #flush
+                print("b",temp)
+        elif len(li[i])==2: #si li[i] est composé de 2 chiffres (fin de liste)
+            mot+=alpha[int(temp+li[i])] #flush
+            print("c",temp)
+        else: #si li[i] est composé de 1 chiffre (fin de liste)
+            if temp!="":
+                mot+=alpha[int(temp+"0")] #flush
+            mot+=alpha[int(li[i])]
+            print("d",temp)
+        print("boucle",e)
+    print(e)
     return mot #renvoie mot
 
-        
-
-
+def rsa(message,cle,n):
+    for i in range(len(message)):
+        message[i]=int(message[i])**cle%n
 
 
 #exo1
@@ -146,7 +153,31 @@ print(3640*-7+307*83)"""
 #exo3
 alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-m1="ALPHA"
+e=257
+n=1073
+d=353
+
+
+print("=========TABLE FONCTION==========")
+
+for x in range(34):
+    y=math.ceil(2*x/3)
+    print("x=",x,"; y=",y,sep="")
+print("=============================")
+
+m1="AJOUT"
+print("le mot est:",m1)
+print("taille du mot:",len(m1))
+
 c1=alphatonum(m1,alpha)
-print(c1)
-print(numtoalpha(c1,alpha))
+print("c1:",c1)
+
+rsa(c1,e,n)
+print("c1 crypté:",c1)
+
+rsa(c1,d,n)
+print("c1 décrypté:",c1)
+
+m1=numtoalpha(c1,alpha)
+print("le mot est:",m1)
+
