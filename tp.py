@@ -53,6 +53,7 @@ def euclideEtt(a,b):
         v2=v3-q*v2
     return [r1,u1,v1] # retourne l'identité de bézout
 
+
 def alphatonum(mot,alpha):
     li=[] #liste de chiffres par bloc de 3
     temp="" #mémoire temporaire
@@ -202,3 +203,26 @@ n=1073
 d=353
 
 print(numtoalpha([110,1,3,6],alpha))
+
+print("=========TABLE FONCTION==========")
+
+for x in range(34):
+    y=math.ceil(2*x/3)
+    print("x=",x,"; y=",y,sep="")
+print("=============================")
+
+m1="AJOUTERA"
+print("!le mot est:",m1)
+print("!taille du mot:",len(m1))
+
+c1=alphatonum(m1,alpha)
+print("!c1:",c1)
+
+rsa(c1,e,n)
+print("!c1 crypté:",c1)
+
+rsa(c1,d,n)
+print("!c1 décrypté:",c1)
+
+m1=numtoalpha(c1,alpha)
+print("!le mot est:",m1)
